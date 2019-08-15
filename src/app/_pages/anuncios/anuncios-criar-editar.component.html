@@ -1,0 +1,114 @@
+<app-my-page-title [heading]="heading" [icon]="icon">
+</app-my-page-title>
+<div class="main-card mb-3 card">
+  <div class="card-body">
+    <h5 class="card-title">Anúncio</h5>
+    <form [formGroup]="anuncioForm" (ngSubmit)="onSubmit()">
+      <div class="position-relative row form-group">
+        <label for="adname" class="col-sm-2 col-form-label">Nome do anúncio</label>
+        <div class="col-sm-10">
+          <input name="adname" id="adname" formControlName="adname" placeholder="Nome..." type="text"
+            class="form-control" [ngClass]="{ 'is-invalid': submitted && f.adname.errors }">
+          <div *ngIf="submitted && f.adname.errors" class="invalid-feedback">
+            <div *ngIf="f.adname.errors.required">Nome do anúncio é obrigatório</div>
+          </div>
+        </div>
+      </div>
+      <div class="position-relative row form-group"><label for="type" class="col-sm-2 col-form-label">Tipo</label>
+        <div class="col-sm-10">
+          <select name="type" id="type" formControlName="type" class="form-control"
+            [ngClass]="{ 'is-invalid': submitted && f.adname.errors }">
+            <option value="1">Imagem</option>
+          </select>
+          <div *ngIf="submitted && f.type.errors" class="invalid-feedback">
+            <div *ngIf="f.type.errors.required">Tipo é obrigatório</div>
+          </div>
+        </div>
+      </div>
+      <div class="position-relative row form-group">
+        <label for="mimetype" class="col-sm-2 col-form-label">MIME Type</label>
+        <div class="col-sm-10">
+          <input name="mimetype" id="mimetype" formControlName="mimetype" placeholder="MIME Type..." type="text"
+            class="form-control" [ngClass]="{ 'is-invalid': submitted && f.mimetype.errors }">
+          <div *ngIf="submitted && f.mimetype.errors" class="invalid-feedback">
+            <div *ngIf="f.mimetype.errors.required">MIME Type é obrigatório</div>
+          </div>
+        </div>
+      </div>
+      <div class="position-relative row form-group">
+        <label for="duration" class="col-sm-2 col-form-label">Duração</label>
+        <div class="col-sm-10">
+          <input name="duration" id="duration" formControlName="duration" placeholder="Duração..." type="number"
+            step="1" max="60" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.duration.errors }">
+          <div *ngIf="submitted && f.duration.errors" class="invalid-feedback">
+            <div *ngIf="f.duration.errors.required">Duração é obrigatório</div>
+          </div>
+        </div>
+      </div>
+      <div class="position-relative row form-group">
+        <label for="weight" class="col-sm-2 col-form-label">Peso</label>
+        <div class="col-sm-10">
+          <input name="weight" id="weight" formControlName="weight" placeholder="Peso..." type="number" step="1"
+            class="form-control" [ngClass]="{ 'is-invalid': submitted && f.weight.errors }">
+        </div>
+      </div>
+      <div class="position-relative row form-group"><label for="mediapath"
+          class="col-sm-2 col-form-label">Arquivo</label>
+        <div class="col-sm-10" *ngIf="!showCurrentMediaPath">
+          <input name="mediapath" id="mediapath" formControlName="mediapath" type="file" class="form-control-file"
+            (change)="onFileSelect($event)" [ngClass]="{ 'is-invalid': submitted && f.mediapath.errors }">
+          <div *ngIf="submitted && f.mediapath.errors" class="invalid-feedback">
+            <div *ngIf="f.mediapath.errors.required">Arquivo é obrigatório</div>
+          </div>
+          <!--
+          <small class="form-text text-muted">This is some placeholder block-level help text for the above
+            input. It's a bit lighter and easily wraps to a new line.
+          </small>
+        -->
+        </div>
+        <div class="col-sm-10" *ngIf="showCurrentMediaPath">
+          <ng-template #content6 let-c="close" let-d="dismiss">
+            <div class="modal-header">
+              <h4 class="modal-title">Media</h4>
+              <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <img class="media-img" src="{{currentMediaPath}}" alt="{{f.adname.value}}">
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" (click)="c('Close click')">Fechar</button>
+            </div>
+          </ng-template>
+          <button type="button" class="btn btn-success" (click)="openLarge(content6)">Ver media</button>
+        </div>
+      </div>
+      <div class="position-relative row form-group">
+        <label for="tags" class="col-sm-2 col-form-label">Tags</label>
+        <div class="col-sm-10">
+          <ejs-multiselect id="tags" formControlName="tags" name="tags" [dataSource]="tags$ | async"
+            [fields]="tagsFields" [placeholder]="tagsWaterMark"></ejs-multiselect>
+        </div>
+      </div>
+      <div class="position-relative row form-group"><label for="places" class="col-sm-2 col-form-label">Locais</label>
+        <div class="col-sm-10">
+          <ejs-multiselect id="places" formControlName="places" name="places" [dataSource]="places$ | async"
+            [fields]="placesFields" [placeholder]="placesWaterMark"></ejs-multiselect>
+        </div>
+      </div>
+      <div class="position-relative row form-group"><label for="groups" class="col-sm-2 col-form-label">Grupos</label>
+        <div class="col-sm-10">
+          <ejs-multiselect id="groups" formControlName="groups" name="groups" [dataSource]="groups$ | async"
+            [fields]="groupsFields" [placeholder]="groupsWaterMark" (select)="groupSelected($event)"
+            (removed)="groupRemoved($event)"></ejs-multiselect>
+        </div>
+      </div>
+      <div class="position-relative row form-check">
+        <div class="col-sm-10 offset-sm-2">
+          <button [disabled]="loading" class="btn btn-secondary">Salvar</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

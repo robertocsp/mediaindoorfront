@@ -1,0 +1,68 @@
+<div class="h-100 bg-plum-plate bg-animation">
+  <div class="d-flex h-100 justify-content-center align-items-center">
+    <div class="mx-auto app-login-box col-md-8">
+      <!--<div class="app-logo-inverse mx-auto mb-3"></div>-->
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <div class="modal-dialog w-100 mx-auto">
+          <div class="modal-content">
+            <div class="modal-body">
+              <div class="h5 modal-title text-center">
+                <h4 class="mt-2">
+                  <div>Bem-vindo,</div>
+                  <span>Por favor, acesse sua conta abaixo.</span>
+                </h4>
+              </div>
+              <div id="emailInputGroup" role="group" aria-describedby="emailInputGroup__BV_description_"
+                class="form-group">
+                <div>
+                  <input id="emailInput" type="email" formControlName="username" placeholder="E-mail..."
+                    required="required" aria-required="true" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted && f.username.errors }"
+                    aria-describedby="emailInputGroup__BV_description_">
+                  <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
+                    <div *ngIf="f.username.errors.required">Usuário é obrigatório</div>
+                  </div>
+                  <!--<small tabindex="-1" id="emailInputGroup__BV_description_" class="form-text text-muted">Seu e-mail não será compartilhado.
+                  </small>-->
+                </div>
+              </div>
+              <div id="passwordInputGroup" role="group" class="form-group">
+                <div>
+                  <input id="passwordInput" formControlName="password" type="password" placeholder="Senha..."
+                    required="required" aria-required="true" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted && f.password.errors }">
+                  <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+                    <div *ngIf="f.password.errors.required">Senha é obrigatória</div>
+                  </div>
+                </div>
+              </div>
+              <!--<div class="custom-control custom-checkbox"><input id="exampleCheck" type="checkbox" name="check"
+                  autocomplete="off" class="custom-control-input" value="true"><label for="exampleCheck"
+                  class="custom-control-label">
+                  Mantenha-me 
+                </label></div>-->
+              <div class="divider"></div>
+              <h6 class="mb-0">
+                Ficou interessado?
+                <a [routerLink]="" class="text-primary">Assine agora</a></h6>
+            </div>
+            <div class="modal-footer clearfix">
+              <div class="float-left"><a [routerLink]="" class="btn-lg btn btn-link">Recuperar
+                  Senha</a>
+              </div>
+              <div class="float-right">
+                <button [disabled]="loading" class="btn btn-primary btn-lg">
+                  <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                  Entrar no Dashboard
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+      <div class="text-center text-white opacity-8 mt-3">
+        Copyright © Media Indoor 2019
+      </div>
+    </div>
+  </div>
+</div>

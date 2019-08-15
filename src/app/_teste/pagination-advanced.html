@@ -1,0 +1,12 @@
+<p>Restricted size, no rotation:</p>
+<ngb-pagination (pageChange)="pageChanged($event)" [collectionSize]="cs" [(page)]="page" [maxSize]="limit" [boundaryLinks]="true"></ngb-pagination>
+
+<p>Restricted size with rotation:</p>
+<ngb-pagination (pageChange)="pageChanged($event)" [collectionSize]="cs" [(page)]="page" [maxSize]="limit" [rotate]="true" [boundaryLinks]="true"></ngb-pagination>
+
+<p>Restricted size with rotation and no ellipses:</p>
+<ngb-pagination (pageChange)="pageChanged($event)" [collectionSize]="cs" [(page)]="page" [maxSize]="limit" [rotate]="true" [ellipses]="false" [boundaryLinks]="true"></ngb-pagination>
+
+<hr>
+
+<pre>Current page: {{page}}</pre>
