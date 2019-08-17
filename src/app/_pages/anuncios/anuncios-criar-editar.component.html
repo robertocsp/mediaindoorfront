@@ -52,11 +52,12 @@
             class="form-control" [ngClass]="{ 'is-invalid': submitted && f.weight.errors }">
         </div>
       </div>
-      <div class="position-relative row form-group"><label for="mediapath"
-          class="col-sm-2 col-form-label">Arquivo</label>
+      <div class="position-relative row form-group">
+        <label for="mediapath" class="col-sm-2 col-form-label">Arquivo</label>
         <div class="col-sm-10" *ngIf="!showCurrentMediaPath">
           <input name="mediapath" id="mediapath" formControlName="mediapath" type="file" class="form-control-file"
             (change)="onFileSelect($event)" [ngClass]="{ 'is-invalid': submitted && f.mediapath.errors }">
+          <button *ngIf="currentMediaPath" type="button" class="btn" (click)="cancel()">Cancelar</button>
           <div *ngIf="submitted && f.mediapath.errors" class="invalid-feedback">
             <div *ngIf="f.mediapath.errors.required">Arquivo é obrigatório</div>
           </div>
@@ -82,6 +83,7 @@
             </div>
           </ng-template>
           <button type="button" class="btn btn-success" (click)="openLarge(content6)">Ver media</button>
+          <button type="button" class="btn" (click)="showCurrentMediaPath=false">Trocar media</button>
         </div>
       </div>
       <div class="position-relative row form-group">

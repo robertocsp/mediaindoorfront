@@ -169,4 +169,9 @@ export class AnunciosEditarComponent implements OnInit {
                     this.loading = false;
                 });
     }
+
+    cancel() {
+        this.f.mediapath.setValue('');
+        this.showCurrentMediaPath=true;
+    }
 }

@@ -28,6 +28,7 @@ export class AnunciosCriarComponent implements OnInit {
     public placesWaterMark: string = 'Locais';
     public tagsFields: Object = { text: 'tagname', value: 'tagname' };
     public tagsWaterMark: string = 'Tags';
+    currentMediaPath: string;
     showCurrentMediaPath = false;
 
     ngOnInit() {
