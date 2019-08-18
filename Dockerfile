@@ -20,15 +20,16 @@ RUN npm install
 
 # Get all the code needed to run the app
 
-COPY . .
+#COPY . .
+ADD dist .
 
 # Run the angular in product
-RUN npm run build
+#RUN npm run build
 
 # Stage 2
 FROM nginx:latest
 
 #copy dist content to html nginx folder, config nginx to point in index.html
-COPY --from=node /usr/src/app/dist /etc/nginx/html
+COPY --from=node /usr/src/app /etc/nginx/html
 
 COPY ./mediaindoornginx.conf /etc/nginx/conf.d/default.conf
