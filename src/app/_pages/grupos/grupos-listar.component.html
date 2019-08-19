@@ -1,0 +1,45 @@
+<app-my-page-title [heading]="heading" [icon]="icon" [routerLinkValue]="'/arealogada/grupos/criar'">
+</app-my-page-title>
+
+<div class="main-card mb-3 card">
+  <div class="card-header">
+    <div class="card-header-title font-size-lg text-capitalize font-weight-normal">Lista de grupos</div>
+  </div>
+  <div class="table-responsive">
+    <table class="align-middle text-truncate mb-0 table table-borderless table-hover">
+      <thead>
+        <tr>
+          <th class="text-center">Nome</th>
+          <th class="text-center">Data da criação</th>
+          <th class="text-center">Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let group of groups$">
+          <td class="text-center"><a [routerLink]="['/arealogada/grupos/editar', group._id]">{{group.groupname}}</a></td>
+          <td class="text-center">{{group.createdDate | date : 'dd-MMM-yyyy'}}</td>
+          <td class="text-center">
+            <div role="group" class="btn-group-sm btn-group">
+              <button class="btn-shadow btn btn-primary"
+                [routerLink]="['/arealogada/grupos/editar', group._id]">Editar</button>
+              <button class="btn-shadow btn btn-primary" (click)="deleteGroup(group._id)">Excluir</button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="d-block p-4 text-center card-footer">
+    <ngb-pagination class="d-flex justify-content-center" [collectionSize]="collectionSize" [(page)]="page"
+      [pageSize]="limit" [rotate]="true" [boundaryLinks]="true" (pageChange)="getGroups($event)">
+    </ngb-pagination>
+  </div>
+  <!--div class="d-block p-4 text-center card-footer">
+    <button class="btn-pill btn-shadow btn-wide fsize-1 btn btn-dark btn-lg">
+      <span class="mr-2 opacity-7">
+        <i class="fa fa-cog fa-spin"></i>
+      </span>
+      <span class="mr-1">View Complete Report</span>
+    </button>
+  </div-->
+</div>

@@ -24,9 +24,6 @@ import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import { ChartsModule } from 'ng2-charts';
 
-
-import { NgbdPaginationAdvanced } from './_teste/pagination-advanced';
-
 // LAYOUT
 
 import { BaseLayoutComponent } from './Layout/base-layout/base-layout.component';
@@ -53,9 +50,15 @@ import { MediaIndoorComponent } from './_pages/mediaindoor/media-indoor.componen
 import { MyPageTitleComponent } from './_pages/layout/my-page-title.component';
 import { LoginComponent } from './_pages/usuarios/login.component';
 import { ForgotPasswordBoxedComponent } from './_pages/usuarios/forgot-password-boxed/forgot-password-boxed.component';
+import { RegisterComponent } from './_pages/usuarios/register.component';
+
 import { AnunciosListarComponent } from './_pages/anuncios/anuncios-listar.component';
 import { AnunciosCriarComponent } from './_pages/anuncios/anuncios-criar.component';
 import { AnunciosEditarComponent } from './_pages/anuncios/anuncios-editar.component';
+
+import { GruposListarComponent } from './_pages/grupos/grupos-listar.component';
+import { GruposCriarComponent } from './_pages/grupos/grupos-criar.component';
+import { GruposEditarComponent } from './_pages/grupos/grupos-editar.component';
 
 //
 
@@ -71,8 +74,6 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     BaseLayoutComponent,
     PagesLayoutComponent,
     PageTitleComponent,
-
-    NgbdPaginationAdvanced,
 
     // HEADER
 
@@ -95,9 +96,15 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     MyPageTitleComponent,
     LoginComponent,
     ForgotPasswordBoxedComponent,
+    RegisterComponent,
+    
     AnunciosListarComponent,
     AnunciosCriarComponent,
     AnunciosEditarComponent,
+
+    GruposListarComponent,
+    GruposCriarComponent,
+    GruposEditarComponent,
   ],
   imports: [
     BrowserModule,

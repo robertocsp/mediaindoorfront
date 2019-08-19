@@ -17,7 +17,7 @@
       <div class="position-relative row form-group"><label for="type" class="col-sm-2 col-form-label">Tipo</label>
         <div class="col-sm-10">
           <select name="type" id="type" formControlName="type" class="form-control"
-            [ngClass]="{ 'is-invalid': submitted && f.adname.errors }">
+            [ngClass]="{ 'is-invalid': submitted && f.type.errors }">
             <option value="1">Imagem</option>
           </select>
           <div *ngIf="submitted && f.type.errors" class="invalid-feedback">

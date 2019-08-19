@@ -18,10 +18,15 @@ import { AnunciosListarComponent } from './_pages/anuncios/anuncios-listar.compo
 import { AnunciosCriarComponent } from './_pages/anuncios/anuncios-criar.component';
 import { AnunciosEditarComponent } from './_pages/anuncios/anuncios-editar.component';
 
+// Grupos
+
+import { GruposListarComponent } from './_pages/grupos/grupos-listar.component';
+import { GruposCriarComponent } from './_pages/grupos/grupos-criar.component';
+import { GruposEditarComponent } from './_pages/grupos/grupos-editar.component';
+
 //
 
 import { AuthGuard } from './_helpers';
-import { NgbdPaginationAdvanced } from './_teste/pagination-advanced';
 
 const routes: Routes = [
   {
@@ -36,6 +41,24 @@ const routes: Routes = [
       { path: 'anuncios/listar', component: AnunciosListarComponent, data: { extraParameter: 'anunciosMenu' } },
       { path: 'anuncios/criar', component: AnunciosCriarComponent, data: { extraParameter: 'anunciosMenu' } },
       { path: 'anuncios/editar/:id', component: AnunciosEditarComponent, data: { extraParameter: 'anunciosMenu' } },
+
+      // GRUPOS
+
+      { path: 'grupos/listar', component: GruposListarComponent, data: { extraParameter: 'gruposMenu' } },
+      { path: 'grupos/criar', component: GruposCriarComponent, data: { extraParameter: 'gruposMenu' } },
+      { path: 'grupos/editar/:id', component: GruposEditarComponent, data: { extraParameter: 'gruposMenu' } },
+
+      // LOCAIS
+
+      { path: 'locais/listar', component: AnunciosListarComponent, data: { extraParameter: 'locaisMenu' } },
+      { path: 'locais/criar', component: AnunciosCriarComponent, data: { extraParameter: 'locaisMenu' } },
+      { path: 'locais/editar/:id', component: AnunciosEditarComponent, data: { extraParameter: 'locaisMenu' } },
+
+      // USUARIOS
+
+      { path: 'usuarios/listar', component: AnunciosListarComponent, data: { extraParameter: 'usuariosMenu' } },
+      { path: 'usuarios/criar', component: AnunciosCriarComponent, data: { extraParameter: 'usuariosMenu' } },
+      { path: 'usuarios/editar/:id', component: AnunciosEditarComponent, data: { extraParameter: 'usuariosMenu' } },
     ]
 
   },

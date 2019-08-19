@@ -1,0 +1,54 @@
+<app-my-page-title [heading]="heading" [icon]="icon">
+</app-my-page-title>
+<div class="main-card mb-3 card">
+  <div class="card-body">
+    <h5 class="card-title">Grupo</h5>
+    <form [formGroup]="grupoForm" (ngSubmit)="onSubmit()">
+      <div class="position-relative row form-group">
+        <label for="groupname" class="col-sm-2 col-form-label">Nome do grupo</label>
+        <div class="col-sm-10">
+          <input name="groupname" id="groupname" formControlName="groupname" placeholder="Nome..." type="text"
+            class="form-control" [ngClass]="{ 'is-invalid': submitted && f.groupname.errors }">
+          <div *ngIf="submitted && f.groupname.errors" class="invalid-feedback">
+            <div *ngIf="f.groupname.errors.required">Nome do grupo é obrigatório</div>
+          </div>
+        </div>
+      </div>
+      <div class="card-header">Usuários</div>
+      <div class="card-body" formArrayName="users">
+        <div class="row">
+          <div class="col-6" *ngFor="let oneUser of userFormGroup.controls; let i = index;">
+            <div [formGroupName]="i" class="row">
+              <div class="form-group col-6">
+                <label>Usuário</label>
+                <input class="form-control" formControlName="user" type="text">
+                <span class="text-danger"
+                  *ngIf="getUsersFormGroup(i).controls['user'].touched && getUsersFormGroup(i).controls['user'].hasError('required')">
+                  Usuário é obrigatório! </span>
+              </div>
+              <div class="form-group col-6">
+                <label>Papel</label>
+                <select class="form-control" formControlName="role" type="text">
+                  <option value="SuperAdmin">Super Admin</option>
+                  <option value="AdminGrupo">Admin de Grupo</option>
+                  <option value="ComumGrupo">Comum de Grupo</option>
+                  <option value="AdminLocal">Admin de Local</option>
+                  <option value="ComumLocal">Comum de Local</option>
+                </select>
+              </div>
+              <div class="form-group col-12 text-right">
+                <button class="btn btn-danger" type="button" (click)="removeUser(i)"> Remover </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="col-12">
+          <button class="btn btn-primary m-1" type="button" (click)="addUser(null)"> Adicionar Usuário </button>
+          <button [disabled]="!grupoForm.valid || loading" class="btn btn-secondary">Salvar</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
