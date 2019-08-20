@@ -77,7 +77,7 @@ export class AnunciosEditarComponent implements OnInit {
                 type: data.type,
                 mimetype: data.mimetype,
                 duration: data.duration,
-                weight: data.weight,
+                weight: data.weight ? data.weight : null,
                 mediapath: null,
                 tags: data.tags,
                 places: data.places,

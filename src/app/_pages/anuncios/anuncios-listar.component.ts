@@ -16,7 +16,7 @@ export class AnunciosListarComponent implements OnInit {
     icon = 'pe-7s-monitor icon-gradient bg-mean-fruit';
     page = 1;
     collectionSize = 0;
-    limit = 1;
+    limit = 100;
 
     ngOnInit() {
         this.getAds(null);
