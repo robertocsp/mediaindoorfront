@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  socketiourl: 'http://node:3030'
+  socketiourl: 'http://34.234.87.81'
 };
