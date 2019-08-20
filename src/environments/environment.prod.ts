@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  socketiourl: 'http://localhost:3030'
+  socketiourl: 'http://node:3030'
 };
