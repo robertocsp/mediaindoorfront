@@ -27,10 +27,10 @@
           <td class="text-center"><a [routerLink]="['/arealogada/anuncios/editar', ad._id]">{{ad.adname}}</a></td>
           <td class="text-center">{{ad.createdDate | date : 'dd-MMM-yyyy'}}</td>
           <td class="text-center">
-            {{ad.groups}}
+              {{objectArrayToString(ad.groups, 'groupname')}}
           </td>
           <td class="text-center">
-            {{ad.places}}
+              {{objectArrayToString(ad.places, 'placename')}}
           </td>
           <td class="text-center">
             {{ad.type}}
@@ -48,7 +48,21 @@
             {{ad.tags}}
           </td>
           <td class="text-center">
-            {{ad.mediapath}}
+            <ng-template #content6 let-c="close" let-d="dismiss">
+              <div class="modal-header">
+                <h4 class="modal-title">Media</h4>
+                <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <img class="media-img" src="{{ad.mediapath}}" alt="{{ad.adname}}">
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="c('Close click')">Fechar</button>
+              </div>
+            </ng-template>
+            <button type="button" class="btn btn-success" (click)="openLarge(content6)">Ver media</button>
           </td>
           <td class="text-center">
             <div role="group" class="btn-group-sm btn-group">
@@ -66,12 +80,4 @@
       [pageSize]="limit" [rotate]="true" [boundaryLinks]="true" (pageChange)="getAds($event)">
     </ngb-pagination>
   </div>
-  <!--div class="d-block p-4 text-center card-footer">
-    <button class="btn-pill btn-shadow btn-wide fsize-1 btn btn-dark btn-lg">
-      <span class="mr-2 opacity-7">
-        <i class="fa fa-cog fa-spin"></i>
-      </span>
-      <span class="mr-1">View Complete Report</span>
-    </button>
-  </div-->
 </div>

@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from "@angular/router";
 import { AuthenticationService, AnunciosService } from '../../_services';
-import { Observable, of } from 'rxjs';
-import { switchMap, catchError, first } from 'rxjs/operators';
+import { of } from 'rxjs';
+import { switchMap, catchError, first, map } from 'rxjs/operators';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-anuncios-listar',
     templateUrl: './anuncios-listar.component.html',
+    styles: ['.media-img { position: inherit; max-width: 100%; max-height: 100%; }']
 })
 export class AnunciosListarComponent implements OnInit {
     currentUser: any;
@@ -26,7 +28,8 @@ export class AnunciosListarComponent implements OnInit {
         private route: ActivatedRoute,
         private router: Router,
         private authenticationService: AuthenticationService,
-        private anunciosService: AnunciosService
+        private anunciosService: AnunciosService,
+        private modalService: NgbModal
     ) {
         this.authenticationService.currentUser.subscribe(user => this.currentUser = user);
     }
@@ -65,5 +68,15 @@ export class AnunciosListarComponent implements OnInit {
                 this.ads$ = ads.ads;
                 this.collectionSize = ads.adsCount;
             });
+    }
+
+    objectArrayToString(objArray, propertyToPrint) {
+        return Array.prototype.map.call(objArray, function(item) { return item[propertyToPrint]; }).join(", ")
+    }
+
+    openLarge(content) {
+        this.modalService.open(content, {
+            size: 'lg'
+        });
     }
 }

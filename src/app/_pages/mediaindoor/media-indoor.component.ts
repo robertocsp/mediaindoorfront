@@ -49,7 +49,7 @@ export class MediaIndoorComponent implements OnInit, OnDestroy {
                 this.currentIndex = 0;
               }
             }
-            if (i === this.currentAd.duration) {
+            if (!this.currentAd || i === this.currentAd.duration) {
               this.refreshTimer();
             }
           });
