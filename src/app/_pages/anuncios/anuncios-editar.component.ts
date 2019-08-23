@@ -22,17 +22,18 @@ export class AnunciosEditarComponent implements OnInit {
     submitted = false;
     anuncioForm: FormGroup;
     arquivo$: File;
-    tags$: Observable<any>;
+    // tags$: Observable<any>;
     places$: Observable<any>;
     groups$: Observable<any>;
     public groupsFields: Object = { text: 'groupname', value: '_id' };
     public groupsWaterMark: string = 'Grupos';
     public placesFields: Object = { text: 'placename', value: '_id' };
     public placesWaterMark: string = 'Locais';
-    public tagsFields: Object = { text: 'tagname', value: 'tagname' };
-    public tagsWaterMark: string = 'Tags';
+    // public tagsFields: Object = { text: 'tagname', value: 'tagname' };
+    // public tagsWaterMark: string = 'Tags';
     currentMediaPath: string;
     showCurrentMediaPath = true;
+    error: string;
 
     ngOnInit() {
         this.anuncioForm = this.formBuilder.group({
@@ -42,14 +43,14 @@ export class AnunciosEditarComponent implements OnInit {
             duration: ['', Validators.required],
             weight: [''],
             mediapath: [null],
-            tags: [[]],
+            // tags: [[]],
             places: [[]],
             groups: [[]]
         });
         this.getAd(this.route.snapshot.paramMap.get("id"));
         this.places$ = this.placesService.getAll().pipe(map(places => places));
         this.groups$ = this.gruposService.getAll().pipe(map(groups => groups));
-        this.tags$ = this.tagsService.getAll().pipe(map(tags => tags));
+        // this.tags$ = this.tagsService.getAll().pipe(map(tags => tags));
     }
 
     constructor(
@@ -60,7 +61,7 @@ export class AnunciosEditarComponent implements OnInit {
         private anunciosService: AnunciosService,
         private gruposService: GruposService,
         private placesService: PlacesService,
-        private tagsService: TagsService,
+        // private tagsService: TagsService,
         private modalService: NgbModal
     ) {
         this.authenticationService.currentUser.subscribe(user => this.currentUser = user);
@@ -79,7 +80,7 @@ export class AnunciosEditarComponent implements OnInit {
                 duration: data.duration,
                 weight: data.weight ? data.weight : null,
                 mediapath: null,
-                tags: data.tags,
+                // tags: data.tags,
                 places: data.places,
                 groups: data.groups
             });
@@ -148,9 +149,9 @@ export class AnunciosEditarComponent implements OnInit {
         if (this.arquivo$) {
             formData.append('mediapath', this.arquivo$);
         }
-        if (this.f.tags.value.length) {
-            formData.append('tags', this.f.tags.value);
-        }
+        // if (this.f.tags.value.length) {
+        //     formData.append('tags', this.f.tags.value);
+        // }
         if (this.f.places.value.length) {
             formData.append('places', this.f.places.value);
         }
@@ -165,6 +166,10 @@ export class AnunciosEditarComponent implements OnInit {
                     this.router.navigate(['arealogada/anuncios/listar']);
                 },
                 error => {
+                    if(error === 'Payload Too Large') {
+                        error = 'Tamanho do arquivo não pode ultrapassar 1 MB.';
+                    }
+                    this.error = error;
                     console.error(error);
                     this.loading = false;
                 });

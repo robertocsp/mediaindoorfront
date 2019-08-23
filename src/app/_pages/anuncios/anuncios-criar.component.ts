@@ -2,10 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from "@angular/router";
 import { AuthenticationService, AnunciosService, GruposService, PlacesService, TagsService } from '../../_services';
 import { Observable, of } from 'rxjs';
-import { first, map } from 'rxjs/operators';
+import { first, map, catchError } from 'rxjs/operators';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SelectEventArgs } from '@syncfusion/ej2-lists';
 import { RemoveEventArgs } from '@syncfusion/ej2-dropdowns';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
     selector: 'app-anuncios-criar',
@@ -19,17 +20,18 @@ export class AnunciosCriarComponent implements OnInit {
     submitted = false;
     anuncioForm: FormGroup;
     arquivo$: File;
-    tags$: Observable<any>;
+    // tags$: Observable<any>;
     places$: Observable<any>;
     groups$: Observable<any>;
     public groupsFields: Object = { text: 'groupname', value: '_id' };
     public groupsWaterMark: string = 'Grupos';
     public placesFields: Object = { text: 'placename', value: '_id' };
     public placesWaterMark: string = 'Locais';
-    public tagsFields: Object = { text: 'tagname', value: 'tagname' };
-    public tagsWaterMark: string = 'Tags';
+    // public tagsFields: Object = { text: 'tagname', value: 'tagname' };
+    // public tagsWaterMark: string = 'Tags';
     currentMediaPath: string;
     showCurrentMediaPath = false;
+    error: string;
 
     ngOnInit() {
         this.anuncioForm = this.formBuilder.group({
@@ -39,13 +41,13 @@ export class AnunciosCriarComponent implements OnInit {
             duration: ['', Validators.required],
             weight: [''],
             mediapath: [null, Validators.required],
-            tags: [[]],
+            // tags: [[]],
             places: [[]],
             groups: [[]]
         });
         this.places$ = this.placesService.getAll().pipe(map(places => places));
         this.groups$ = this.gruposService.getAll().pipe(map(groups => groups));
-        this.tags$ = this.tagsService.getAll().pipe(map(tags => tags));
+        // this.tags$ = this.tagsService.getAll().pipe(map(tags => tags));
     }
 
     constructor(
@@ -56,7 +58,7 @@ export class AnunciosCriarComponent implements OnInit {
         private anunciosService: AnunciosService,
         private gruposService: GruposService,
         private placesService: PlacesService,
-        private tagsService: TagsService
+        // private tagsService: TagsService
     ) {
         this.authenticationService.currentUser.subscribe(user => this.currentUser = user);
     }
@@ -107,6 +109,7 @@ export class AnunciosCriarComponent implements OnInit {
         }
 
         this.loading = true;
+        this.error = void(0);
 
         const formData = new FormData();
         formData.append('adname', this.f.adname.value);
@@ -117,9 +120,9 @@ export class AnunciosCriarComponent implements OnInit {
             formData.append('weight', this.f.weight.value);
         }
         formData.append('mediapath', this.arquivo$);
-        if(this.f.tags.value.length) {
-            formData.append('tags', this.f.tags.value);
-        }
+        // if(this.f.tags.value.length) {
+        //     formData.append('tags', this.f.tags.value);
+        // }
         if(this.f.places.value.length) {
             formData.append('places', this.f.places.value);
         }
@@ -134,7 +137,10 @@ export class AnunciosCriarComponent implements OnInit {
                     this.router.navigate(['arealogada/anuncios/listar']);
                 },
                 error => {
-                    //this.error = error;
+                    if(error === 'Payload Too Large') {
+                        error = 'Tamanho do arquivo não pode ultrapassar 1 MB.';
+                    }
+                    this.error = error;
                     console.error(error);
                     this.loading = false;
                 });
