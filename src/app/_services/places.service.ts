@@ -11,7 +11,6 @@ export class PlacesService {
     getAll() {
         return this.http.get<any>('/api/v1/places')
             .pipe(map(places => {
-                console.log(places);
                 return places;
             }));
     }
@@ -19,7 +18,6 @@ export class PlacesService {
     getByGroup(groupId) {
         return this.http.get<any>('/api/v1/places/group/' + groupId)
             .pipe(map(places => {
-                console.log(places);
                 return places;
             }));
     }
@@ -27,7 +25,6 @@ export class PlacesService {
     getByNotInGroup(groupId) {
         return this.http.get<any>('/api/v1/places/nigroup/' + groupId)
             .pipe(map(places => {
-                console.log(places);
                 return places;
             }));
     }

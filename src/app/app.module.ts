@@ -59,6 +59,7 @@ import { AnunciosEditarComponent } from './_pages/anuncios/anuncios-editar.compo
 import { GruposListarComponent } from './_pages/grupos/grupos-listar.component';
 import { GruposCriarComponent } from './_pages/grupos/grupos-criar.component';
 import { GruposEditarComponent } from './_pages/grupos/grupos-editar.component';
+import { ControlMessagesComponent } from './_helpers/control-messages.component';
 
 //
 
@@ -105,6 +106,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     GruposListarComponent,
     GruposCriarComponent,
     GruposEditarComponent,
+
+    ControlMessagesComponent,
   ],
   imports: [
     BrowserModule,

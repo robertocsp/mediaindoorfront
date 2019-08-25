@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from "@angular/router";
 import { AuthenticationService, AnunciosService, GruposService, PlacesService, TagsService } from '../../_services';
-import { Observable, of } from 'rxjs';
-import { first, map, catchError } from 'rxjs/operators';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Observable } from 'rxjs';
+import { first, map } from 'rxjs/operators';
+import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { SelectEventArgs } from '@syncfusion/ej2-lists';
 import { RemoveEventArgs } from '@syncfusion/ej2-dropdowns';
-import { HttpErrorResponse } from '@angular/common/http';
+import { AnunciosValidationService } from './anuncios-validation.service';
 
 @Component({
     selector: 'app-anuncios-criar',
@@ -69,7 +69,14 @@ export class AnunciosCriarComponent implements OnInit {
     onFileSelect(event) {
         if (event.target.files.length > 0) {
             this.arquivo$ = event.target.files[0];
-            this.f.mimetype.setValue(this.arquivo$.type);
+            if(this.arquivo$.size > 1048576) {
+                this.error = AnunciosValidationService.getValidatorErrorMessage('invalidfileSizeLimit');
+                console.error(this.arquivo$.size);
+            } else {
+                this.error = void(0);
+                this.f.mimetype.setValue(this.arquivo$.type);
+                console.log(this.arquivo$.size);
+            }
         }
     }
 
@@ -107,6 +114,9 @@ export class AnunciosCriarComponent implements OnInit {
         if (this.anuncioForm.invalid) {
             return;
         }
+        if(this.error) {
+            return;
+        }
 
         this.loading = true;
         this.error = void(0);
@@ -138,7 +148,7 @@ export class AnunciosCriarComponent implements OnInit {
                 },
                 error => {
                     if(error === 'Payload Too Large') {
-                        error = 'Tamanho do arquivo não pode ultrapassar 1 MB.';
+                        error = AnunciosValidationService.getValidatorErrorMessage('invalidfileSizeLimit');
                     }
                     this.error = error;
                     console.error(error);
