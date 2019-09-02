@@ -56,7 +56,11 @@
                 </button>
               </div>
               <div class="modal-body">
-                <img class="media-img" src="{{ad.mediapath}}" alt="{{ad.adname}}">
+                <img *ngIf="ad.type === 1" class="media-img" src="{{ad.mediapath}}" alt="{{ad.adname}}">
+                <video *ngIf="ad.type === 2" height="100%" width="100%" autoplay loop muted>
+                    <source src="{{ad.mediapath}}" type="{{ad.mimetype}}">
+                    <p class="warning">Seu navegador não suporta vídeo HTML5.</p>
+                  </video>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" (click)="c('Close click')">Fechar</button>

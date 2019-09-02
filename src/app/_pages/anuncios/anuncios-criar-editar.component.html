@@ -19,6 +19,7 @@
           <select name="type" id="type" formControlName="type" class="form-control"
             [ngClass]="{ 'is-invalid': submitted && f.type.errors }">
             <option value="1">Imagem</option>
+            <option value="2">Vídeo (.MP4)</option>
           </select>
           <div *ngIf="submitted && f.type.errors" class="invalid-feedback">
             <div *ngIf="f.type.errors.required">Tipo é obrigatório</div>
@@ -77,7 +78,11 @@
               </button>
             </div>
             <div class="modal-body">
-              <img class="media-img" src="{{currentMediaPath}}" alt="{{f.adname.value}}">
+              <img *ngIf="currentMediaType === 1" class="media-img" src="{{currentMediaPath}}" alt="{{f.adname.value}}">
+              <video *ngIf="currentMediaType === 2" height="100%" width="100%" autoplay loop muted>
+                <source src="{{currentMediaPath}}">
+                <p class="warning">Seu navegador não suporta vídeo HTML5.</p>
+              </video>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" (click)="c('Close click')">Fechar</button>
@@ -111,8 +116,8 @@
         <div class="col-sm-10 offset-sm-2">
           <button [disabled]="loading" class="btn btn-secondary">Salvar</button>
           <div *ngIf="error" class="invalid-feedback" [ngClass]="{ 'd-block': error }">
-              <div *ngIf="error">{{error}}</div>
-            </div>
+            <div *ngIf="error">{{error}}</div>
+          </div>
         </div>
       </div>
     </form>

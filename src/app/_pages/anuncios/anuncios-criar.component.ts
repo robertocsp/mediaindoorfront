@@ -31,6 +31,7 @@ export class AnunciosCriarComponent implements OnInit {
     // public tagsWaterMark: string = 'Tags';
     currentMediaPath: string;
     showCurrentMediaPath = false;
+    currentMediaType: number;
     error: string;
 
     ngOnInit() {
@@ -69,7 +70,7 @@ export class AnunciosCriarComponent implements OnInit {
     onFileSelect(event) {
         if (event.target.files.length > 0) {
             this.arquivo$ = event.target.files[0];
-            if(this.arquivo$.size > 1048576) {
+            if(this.arquivo$.size > 1048576 * 6) {
                 this.error = AnunciosValidationService.getValidatorErrorMessage('invalidfileSizeLimit');
                 console.error(this.arquivo$.size);
             } else {

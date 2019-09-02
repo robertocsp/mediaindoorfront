@@ -11,6 +11,9 @@ import { MediaIndoorComponent } from './_pages/mediaindoor/media-indoor.componen
 // Usuarios
 
 import { LoginComponent } from './_pages/usuarios/login.component';
+import { UsuariosListarComponent } from './_pages/usuarios/usuarios-listar.component';
+import { UsuariosCriarComponent } from './_pages/usuarios/usuarios-criar.component';
+import { UsuariosEditarComponent } from './_pages/usuarios/usuarios-editar.component';
 
 // Anuncios
 
@@ -56,9 +59,9 @@ const routes: Routes = [
 
       // USUARIOS
 
-      { path: 'usuarios/listar', component: AnunciosListarComponent, data: { extraParameter: 'usuariosMenu' } },
-      { path: 'usuarios/criar', component: AnunciosCriarComponent, data: { extraParameter: 'usuariosMenu' } },
-      { path: 'usuarios/editar/:id', component: AnunciosEditarComponent, data: { extraParameter: 'usuariosMenu' } },
+      { path: 'usuarios/listar', component: UsuariosListarComponent, data: { extraParameter: 'usuariosMenu' } },
+      { path: 'usuarios/criar', component: UsuariosCriarComponent, data: { extraParameter: 'usuariosMenu' } },
+      { path: 'usuarios/editar/:id', component: UsuariosEditarComponent, data: { extraParameter: 'usuariosMenu' } },
     ]
 
   },

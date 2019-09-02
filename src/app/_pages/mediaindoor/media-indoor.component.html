@@ -1,3 +1,7 @@
 <div class="full-black">
-  <img *ngIf="currentAd" src="{{currentAd.mediapath}}" alt="{{currentAd.adname}}">
+  <img *ngIf="currentAd && currentAd.type === 1" src="{{currentAd.mediapath}}" alt="{{currentAd.adname}}">
+  <video *ngIf="currentAd && currentAd.type === 2" height="100%" width="100%" autoplay loop oncanplay="this.play()"
+    onloadedmetadata="this.muted = true" src="{{currentAd.mediapath}}">
+    <p class="warning">Seu navegador não suporta vídeo HTML5.</p>
+  </video>
 </div>

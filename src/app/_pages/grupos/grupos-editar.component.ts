@@ -1,8 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute, ParamMap } from "@angular/router";
-import { AuthenticationService, AnunciosService, GruposService, PlacesService, TagsService } from '../../_services';
-import { first } from 'rxjs/operators';
+import { ActivatedRoute, Router } from "@angular/router";
+import { AuthenticationService, GruposService } from '../../_services';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
+import { Observable } from 'rxjs';
+import { map, first } from 'rxjs/operators';
+import { UsersService } from 'src/app/_services/users.service';
+import { SelectEventArgs } from '@syncfusion/ej2-lists';
+import { RemoveEventArgs } from '@syncfusion/ej2-dropdowns';
 
 @Component({
     selector: 'app-grupos-editar',
@@ -18,6 +22,11 @@ export class GruposEditarComponent implements OnInit {
     submitted = false;
     grupoForm: FormGroup;
     usersList: FormArray;
+    users$: Observable<any>;
+    public userFields: Object = { text: 'username', value: '_id' };
+    public userWaterMark: string = 'Buscar Usuário';
+    public userSearchWaterMark: string = 'Busca Usuário';
+    private usersAddedToView: string[] = [];
 
     ngOnInit() {
         this.grupoForm = this.formBuilder.group({
@@ -25,18 +34,18 @@ export class GruposEditarComponent implements OnInit {
             users: this.formBuilder.array([])
         });
 
-        // set contactlist to this field
+        // set userslist to this field
         this.usersList = this.grupoForm.get('users') as FormArray;
-
-        this.getGroup(this.route.snapshot.paramMap.get("id"));
+        this.users$ = this.usersService.getByNotIn('current').pipe(map(users => users));
     }
 
     constructor(
         private formBuilder: FormBuilder,
-        private route: ActivatedRoute,
         private router: Router,
+        private route: ActivatedRoute,
         private authenticationService: AuthenticationService,
-        private gruposService: GruposService
+        private gruposService: GruposService,
+        private usersService: UsersService
     ) {
         this.authenticationService.currentUser.subscribe(user => this.currentUser = user);
     }
@@ -50,21 +59,29 @@ export class GruposEditarComponent implements OnInit {
     }
 
     // user formgroup
-    createUser(user): FormGroup {
+    createUser(userObject): FormGroup {
         return this.formBuilder.group({
-            user: [user ? user.user : null, Validators.compose([Validators.required])],
-            role: [user ? user.role : null, Validators.compose([Validators.required])]
+            user: [userObject ? [userObject.user._id] : null, Validators.compose([Validators.required])],
+            role: [userObject ? userObject.role : null, Validators.compose([Validators.required])]
         });
     }
 
     // add a user form group
     addUser(user) {
         this.usersList.push(this.createUser(user));
+        this.usersAddedToView.push(user['user']['username']);
     }
 
     // remove contact from group
-    removeUser(index) {
+    removeUser(index, isSelf) {
         this.usersList.removeAt(index);
+        this.usersAddedToView.splice(index, 1);
+        if(isSelf) {
+            let usersMultiSelect = document.getElementsByTagName('ejs-multiselect')[0]['ej2_instances'][0];
+            let selectedUsers = usersMultiSelect.value;
+            console.log(selectedUsers.splice(index, 1));
+            usersMultiSelect.value = selectedUsers.length ? selectedUsers : null;
+        }
     }
 
     // get the formgroup under users form array
@@ -75,11 +92,15 @@ export class GruposEditarComponent implements OnInit {
 
     getGroup(groupId) {
         this.gruposService.getOne(groupId).subscribe(data => {
-            console.log(data);
-            console.log(data.users);
             this._id = data._id;
             this.grupoForm.get('groupname').setValue(data.groupname);
-            data.users.map(u => this.addUser(u));
+            let usersMultiSelect = document.getElementsByTagName('ejs-multiselect')[0]['ej2_instances'][0];
+            let selectedUsers = usersMultiSelect.value ? usersMultiSelect.value : [];
+            data.users.map(u => {
+                this.addUser(u);
+                selectedUsers.push(u.user._id );
+            });
+            usersMultiSelect.value = selectedUsers;
         });
     }
 
@@ -93,11 +114,17 @@ export class GruposEditarComponent implements OnInit {
 
         this.loading = true;
 
-        const formData = new FormData();
-        formData.append('groupname', this.f.groupname.value);
-        formData.append('users', this.f.users.value);
+        if (this.f.users.value) {
+            this.f.users.value.map(function (elem) {
+                if(Array.isArray(elem.user))
+                    elem.user = elem.user[0];
+            });
+        }
 
-        this.gruposService.update(this._id, formData)
+        this.gruposService.update(this._id, {
+            groupname: this.f.groupname.value,
+            users: this.f.users.value
+        })
             .pipe(first())
             .subscribe(
                 data => {
@@ -107,5 +134,23 @@ export class GruposEditarComponent implements OnInit {
                     console.error(error);
                     this.loading = false;
                 });
+    }
+
+    userSelected(args: SelectEventArgs) {
+        this.addUser({ user: args['itemData'] });
+    }
+
+    userRemoved(args: RemoveEventArgs) {
+        const index = this.usersAddedToView.findIndex(username => {
+            return username === args['itemData']['username'];
+        });
+        this.users$ = this.usersService.getByNotIn('current').pipe(map(users => users));
+        if (index >= 0) {
+            this.removeUser(index, false);
+        }
+    }
+
+    componentCreated(args: Object) {
+        this.getGroup(this.route.snapshot.paramMap.get("id"));
     }
 }

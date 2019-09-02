@@ -1,0 +1,54 @@
+<app-my-page-title [heading]="heading" [icon]="icon">
+</app-my-page-title>
+<div class="main-card mb-3 card">
+  <div class="card-body">
+    <h5 class="card-title">Usuário</h5>
+    <form [formGroup]="usuarioForm" (ngSubmit)="onSubmit()">
+      <div class="position-relative row form-group">
+        <label for="username" class="col-sm-2 col-form-label">E-mail</label>
+        <div class="col-sm-10">
+          <input name="username" id="username" formControlName="username" placeholder="E-mail..." type="text"
+            class="form-control" [ngClass]="{ 'is-invalid': submitted && f.username.errors }">
+          <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
+            <div *ngIf="f.username.errors.required">E-mail é obrigatório</div>
+          </div>
+        </div>
+      </div>
+      <div class="position-relative row form-group">
+        <label for="firstName" class="col-sm-2 col-form-label">Nome</label>
+        <div class="col-sm-10">
+          <input name="firstName" id="firstName" formControlName="firstName" placeholder="Nome..." type="text"
+            class="form-control" [ngClass]="{ 'is-invalid': submitted && f.firstName.errors }">
+          <div *ngIf="submitted && f.firstName.errors" class="invalid-feedback">
+            <div *ngIf="f.firstName.errors.required">Nome é obrigatório</div>
+          </div>
+        </div>
+      </div>
+      <div class="position-relative row form-group">
+        <label for="lastName" class="col-sm-2 col-form-label">Sobrenome</label>
+        <div class="col-sm-10">
+          <input name="lastName" id="lastName" formControlName="lastName" placeholder="Sobrenome..." type="text"
+            class="form-control" [ngClass]="{ 'is-invalid': submitted && f.lastName.errors }">
+          <div *ngIf="submitted && f.lastName.errors" class="invalid-feedback">
+            <div *ngIf="f.lastName.errors.required">Sobrenome é obrigatório</div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="currentUser.isSU" class="position-relative row form-group">
+        <input id="isSU" type="checkbox" name="isSU" formControlName="isSU"  autocomplete="off" class="custom-control-input"
+          value="false" [ngClass]="{ 'is-invalid': submitted && f.isSU.errors }">
+        <label for="isSU" class="custom-control-label">
+          Super usuário?
+        </label>
+      </div>
+      <div class="position-relative row form-check">
+        <div class="col-sm-10 offset-sm-2">
+          <button [disabled]="loading" class="btn btn-secondary">Salvar</button>
+          <div *ngIf="error" class="invalid-feedback" [ngClass]="{ 'd-block': error }">
+            <div *ngIf="error">{{error}}</div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

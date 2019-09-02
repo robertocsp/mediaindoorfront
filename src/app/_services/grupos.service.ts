@@ -11,7 +11,6 @@ export class GruposService {
     getAll() {
         return this.http.get<any>('/api/v1/groups')
             .pipe(map(groups => {
-                console.log(groups);
                 return groups;
             }));
     }
@@ -37,23 +36,21 @@ export class GruposService {
     add(formData) {
         return this.http.post<any>('/api/v1/groups/register', formData)
             .pipe(map(res => {
-                console.log(res);
                 return res;
             }));
     }
 
-    update(adId, formData) {
-        return this.http.put<any>('/api/v1/groups/' + adId, formData)
+    update(adId, group) {
+        console.log('update group::: ' + group);
+        return this.http.put<any>('/api/v1/groups/' + adId, group)
             .pipe(map(res => {
-                console.log(res);
                 return res;
             }));
     }
 
-    delete(adId) {
-        return this.http.delete<any>('/api/v1/groups/' + adId)
+    delete(groupId) {
+        return this.http.delete<any>('/api/v1/groups/' + groupId)
             .pipe(map(res => {
-                console.log(res);
                 return res;
             }));
     }

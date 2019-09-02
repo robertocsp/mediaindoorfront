@@ -60,6 +60,9 @@ import { GruposListarComponent } from './_pages/grupos/grupos-listar.component';
 import { GruposCriarComponent } from './_pages/grupos/grupos-criar.component';
 import { GruposEditarComponent } from './_pages/grupos/grupos-editar.component';
 import { ControlMessagesComponent } from './_helpers/control-messages.component';
+import { UsuariosListarComponent } from './_pages/usuarios/usuarios-listar.component';
+import { UsuariosCriarComponent } from './_pages/usuarios/usuarios-criar.component';
+import { UsuariosEditarComponent } from './_pages/usuarios/usuarios-editar.component';
 
 //
 
@@ -98,7 +101,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     LoginComponent,
     ForgotPasswordBoxedComponent,
     RegisterComponent,
-    
+
     AnunciosListarComponent,
     AnunciosCriarComponent,
     AnunciosEditarComponent,
@@ -106,6 +109,10 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     GruposListarComponent,
     GruposCriarComponent,
     GruposEditarComponent,
+
+    UsuariosListarComponent,
+    UsuariosCriarComponent,
+    UsuariosEditarComponent,
 
     ControlMessagesComponent,
   ],

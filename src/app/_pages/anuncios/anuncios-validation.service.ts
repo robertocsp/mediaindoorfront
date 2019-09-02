@@ -4,7 +4,7 @@ export class AnunciosValidationService {
       'invalidCreditCard': 'Is invalid credit card number',
       'invalidEmailAddress': 'Invalid email address',
       'invalidPassword': 'Invalid password. Password must be at least 6 characters long, and contain a number.',
-      'invalidfileSizeLimit': 'Tamanho do arquivo não pode ultrapassar 1 MB.'
+      'invalidfileSizeLimit': 'Tamanho do arquivo não pode ultrapassar 6 MB.'
     };
 
     return config[validatorName];
