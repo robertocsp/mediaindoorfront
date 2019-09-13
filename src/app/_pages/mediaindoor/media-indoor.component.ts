@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ElementRef } from '@angular/core';
 import { MediaIndoorService } from '../../_services/media-indoor.service';
 import { ActivatedRoute } from '@angular/router';
 import { Subject, Observable, Subscription, timer, BehaviorSubject } from 'rxjs';
@@ -20,7 +20,8 @@ export class MediaIndoorComponent implements OnInit, OnDestroy {
   currentAd: any;
 
   constructor(private route: ActivatedRoute,
-    private mediaIndoorService: MediaIndoorService) {
+    private mediaIndoorService: MediaIndoorService,
+    private elRef: ElementRef) {
     this.place = this.route.snapshot.paramMap.get('place');
     this.timer$ = this.reset$.pipe(
       startWith(0),
@@ -34,26 +35,41 @@ export class MediaIndoorComponent implements OnInit, OnDestroy {
     this.ads$.subscribe(ads => {
       this.adsList = ads;
       if (!this.subscription && this.adsList) {
-          this.subscription = this.timer$.subscribe((i) => {
-            if (i === 0) {
-              if (this.currentIndex >= this.adsList.length) {
-                this.currentIndex = this.adsList.length - 1;
-              }
+        this.subscription = this.timer$.subscribe((i) => {
+          if (i === 0) {
+            if (this.currentIndex >= this.adsList.length) {
+              this.currentIndex = this.adsList.length - 1;
+            }
+            this.currentAd = this.adsList[this.currentIndex];
+            if (!this.currentAd) {
+              this.currentIndex = 0;
               this.currentAd = this.adsList[this.currentIndex];
-              if(!this.currentAd) {
-                this.currentIndex = 0;
-                this.currentAd = this.adsList[this.currentIndex];
-              }
-              this.currentIndex++;
-              if (this.currentIndex > this.adsList.length - 1) {
-                this.currentIndex = 0;
-              }
             }
-            if (!this.currentAd || i === this.currentAd.duration) {
-              this.refreshTimer();
+            this.currentIndex++;
+            if (this.currentIndex > this.adsList.length - 1) {
+              this.currentIndex = 0;
             }
-          });
-        }
+            if (this.currentAd && this.currentAd.type === 2) {
+              this.findVideo()((video) => {
+                if (video.paused) {
+                  video.muted = true;
+                  video.play();
+                  // TODO CONSTRUIR E TESTAR
+                }
+              });
+            }
+          }
+          if (!this.currentAd || i === this.currentAd.duration) {
+            if (this.currentAd && this.currentAd.type === 2) {
+              this.findVideo()((video) => {
+                video.load();
+                video.pause();
+              });
+            }
+            this.refreshTimer();
+          }
+        });
+      }
     });
   }
 
@@ -79,5 +95,22 @@ export class MediaIndoorComponent implements OnInit, OnDestroy {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
+  }
+
+  private findVideo() {
+    let videos = this.elRef.nativeElement.getElementsByTagName('video');
+    let video;
+    let l = videos.length;
+    for (let i = 0; i < l; i++) {
+      if (videos[i].id === this.currentAd.id) {
+        video = videos[i];
+        break;
+      }
+    }
+    return myfunc => {
+      if (video) {
+        myfunc(video);
+      }
+    };
   }
 }
